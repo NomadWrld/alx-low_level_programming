@@ -13,15 +13,18 @@ listint_t *find_listint_loop(listint_t *head)
 	if (head == NULL || head->next == NULL)
 		return (NULL);
 
-	tortoise = head->next;          /* Move by one step */
-	hare = head->next->next;        /* Move by two steps */
+	tortoise = head;            /* Move by one step */
+	hare = head;                /* Move by two steps */
 
 	while (hare && hare->next)
 	{
+		tortoise = tortoise->next;      /* Move by one step */
+		hare = hare->next->next;        /* Move by two steps */
+
 		/* Loop detected */
 		if (tortoise == hare)
 		{
-			tortoise = head;          /* Reset one pointer to the head */
+			tortoise = head;            /* Reset one pointer to the head */
 
 			while (tortoise != hare)
 			{
@@ -29,13 +32,10 @@ listint_t *find_listint_loop(listint_t *head)
 				hare = hare->next;
 			}
 
-			return (tortoise);        /* Node where the loop starts */
+			return (tortoise);          /* Node where the loop starts */
 		}
-
-		tortoise = tortoise->next;    /* Move by one step */
-		hare = hare->next->next;      /* Move by two steps */
 	}
 
-	return (NULL);                   /* No loop found */
+	return (NULL);                     /* No loop found */
 }
 
