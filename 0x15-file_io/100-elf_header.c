@@ -62,6 +62,6 @@ int main(int argc, char *argv[])
 
 	print_elf_header(header);
 	close(fd);
-	return 0;
+	return (0);
 }
 
