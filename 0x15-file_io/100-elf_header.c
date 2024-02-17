@@ -5,10 +5,7 @@
 #include <elf.h>
 #include "main.h"
 
-#define EI_TYPE   16   /* Object file type */
-#define EI_ENTRY  24   /* Entry point address */
-#define EI_PHOFF  28   /* Program header offset */
-#define EI_SHOFF  32   /* Section header offset */
+#define BUF_SIZE 1024
 
 /**
  * print_type - Prints the type of the ELF header
@@ -103,4 +100,40 @@ void print_section_header_offset(unsigned char *buf)
 		}
 	}
 	printf("  Section header offset:             %lu bytes\n", sh_offset);
+}
+
+int main(int argc, char *argv[])
+{
+	if (argc != 2)
+	{
+		fprintf(stderr, "Usage: %s <elf_file>\n", argv[0]);
+		exit(EXIT_FAILURE);
+	}
+
+	int fd = open(argv[1], O_RDONLY);
+
+	if (fd == -1)
+	{
+		perror("open");
+		exit(EXIT_FAILURE);
+	}
+
+	unsigned char buf[BUF_SIZE];
+	ssize_t bytes_read = read(fd, buf, BUF_SIZE);
+
+	if (bytes_read == -1)
+	{
+		perror("read");
+		close(fd);
+		exit(EXIT_FAILURE);
+	}
+
+	print_type(buf);
+	print_entry(buf);
+	print_program_header_offset(buf);
+	print_section_header_offset(buf);
+
+	close(fd);
+
+	return (0);
 }

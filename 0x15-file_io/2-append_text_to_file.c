@@ -15,20 +15,37 @@ int append_text_to_file(const char *filename, char *text_content)
 	ssize_t bytes_written;
 
 	if (filename == NULL)
+	{
 		return (-1);
+	}
 
 	if (text_content == NULL)
-		return (1);
+	{
+		return (-1); /* Change return value to -1 */
+	}
 
 	file = fopen(filename, "a");
 	if (file == NULL)
+	{
 		return (-1);
+	}
 
 	while (text_content[len] != '\0')
+	{
 		len++;
+	}
 
-	bytes_written = fwrite(text_content, sizeof(char), len, file);
-	fclose(file);
-
-	return (bytes_written == len ? 1 : -1);
+	/* Ensure file pointer is valid */
+	if (file != NULL)
+	{
+		bytes_written = fwrite(text_content, sizeof(char), len, file);
+		if (bytes_written < 0)
+		{
+			fclose(file);
+			return (-1);
+		}
+		fclose(file);
+		return (1); /* Return 1 on success */
+	}
+	return (-1); /* Return -1 on failure */
 }

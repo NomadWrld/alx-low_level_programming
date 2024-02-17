@@ -4,6 +4,14 @@
 #include <stdio.h>
 #include "main.h"
 
+/**
+ * read_textfile - Reads and prints a text file.
+ * @filename: Name of the file to read.
+ * @letters: Number of letters to read and print.
+ *
+ * Return: Number of letters read and printed, 0 on failure.
+ */
+
 ssize_t read_textfile(const char *filename, size_t letters)
 {
 	int fd;
